@@ -1,4 +1,4 @@
-const handler = require("../src");
+const app = require("../src");
 
-// 導出 handler
-module.exports = handler;
+// 導出處理函數
+module.exports = app;

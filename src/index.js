@@ -53,10 +53,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "服務器內部錯誤" });
 });
 
-// 創建 HTTP server handler
-const handler = app.listen(process.env.PORT || 5000, () => {
-  logger.info(`Server running on port ${process.env.PORT || 5000}`);
-});
+// 只在非 Vercel 環境中啟動服務器
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    logger.info(`Server running on port ${PORT}`);
+  });
+}
 
-// 導出 handler 而不是 app
-module.exports = handler;
+// 導出 app 而不是 handler
+module.exports = app;
