@@ -4,22 +4,25 @@ const logger = require("./logger");
 
 dotenv.config();
 
-const serviceAccount = {
-  type: process.env.type,
-  project_id: process.env.project_id,
-  private_key_id: process.env.private_key_id,
-  private_key: process.env.private_key,
-  client_email: process.env.client_email,
-  client_id: process.env.client_id,
-  auth_uri: process.env.auth_uri,
-  token_uri: process.env.token_uri,
-  auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
-  client_x509_cert_url: process.env.client_x509_cert_url,
-  universe_domain: process.env.universe_domain,
-};
-
 try {
-  console.log(serviceAccount);
+  // 處理 private key 的換行符號
+  const privateKey = process.env.private_key
+    ? process.env.private_key.replace(/\\n/g, "\n")
+    : undefined;
+
+  const serviceAccount = {
+    type: process.env.type,
+    project_id: process.env.project_id,
+    private_key_id: process.env.private_key_id,
+    private_key: privateKey,
+    client_email: process.env.client_email,
+    client_id: process.env.client_id,
+    auth_uri: process.env.auth_uri,
+    token_uri: process.env.token_uri,
+    auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
+    client_x509_cert_url: process.env.client_x509_cert_url,
+    universe_domain: process.env.universe_domain,
+  };
 
   if (!serviceAccount.project_id) {
     throw new Error(
@@ -55,9 +58,9 @@ try {
     error: error.message,
     stack: error.stack,
     serviceAccount: {
-      projectId: serviceAccount?.project_id,
-      clientEmail: serviceAccount?.client_email,
-      hasPrivateKey: !!serviceAccount?.private_key,
+      projectId: process.env.project_id,
+      clientEmail: process.env.client_email,
+      hasPrivateKey: !!process.env.private_key,
     },
   });
   throw error;
