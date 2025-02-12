@@ -7,8 +7,8 @@ dotenv.config();
 try {
   // 處理 private key 的格式
   const privateKey = process.env.private_key
-    ? JSON.parse(process.env.private_key)
-    : undefined;
+    ?.replace(/\\n/g, "\n")
+    .replace(/^"|"$/g, "");
 
   const serviceAccount = {
     type: process.env.type,
