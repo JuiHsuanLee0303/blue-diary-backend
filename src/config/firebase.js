@@ -5,9 +5,9 @@ const logger = require("./logger");
 dotenv.config();
 
 try {
-  // 處理 private key 的換行符號
+  // 處理 private key 的格式
   const privateKey = process.env.private_key
-    ? process.env.private_key.replace(/\\n/g, "\n")
+    ? JSON.parse(process.env.private_key)
     : undefined;
 
   const serviceAccount = {
