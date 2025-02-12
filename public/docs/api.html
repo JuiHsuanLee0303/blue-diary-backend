@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blue Diary API 文檔</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #0d6efd;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --info-color: #17a2b8;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+      }
+
+      body {
+        padding-top: 60px;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .navbar {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 60px;
+        bottom: 0;
+        left: 0;
+        padding: 20px;
+        width: 260px;
+        overflow-y: auto;
+        background: #f8f9fa;
+        border-right: 1px solid #dee2e6;
+      }
+
+      .main-content {
+        margin-left: 260px;
+        padding: 20px 40px;
+      }
+
+      .endpoint {
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border: 1px solid #dee2e6;
+      }
+
+      .method {
+        font-weight: 600;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        color: white;
+        display: inline-block;
+        min-width: 80px;
+        text-align: center;
+      }
+
+      .get {
+        background-color: var(--success-color);
+      }
+      .post {
+        background-color: var(--primary-color);
+      }
+      .put {
+        background-color: var(--warning-color);
+      }
+      .delete {
+        background-color: var(--danger-color);
+      }
+
+      .endpoint-path {
+        font-family: monospace;
+        font-size: 1.1rem;
+        color: #666;
+        margin-left: 1rem;
+      }
+
+      .endpoint-description {
+        margin: 1rem 0;
+        color: #666;
+      }
+
+      .response-example {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #dee2e6;
+      }
+
+      .nav-pills .nav-link {
+        color: #495057;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+      }
+
+      .nav-pills .nav-link:hover {
+        background-color: #e9ecef;
+      }
+
+      .nav-pills .nav-link.active {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      pre {
+        background-color: #272822;
+        border-radius: 6px;
+        margin: 1rem 0;
+      }
+
+      code {
+        font-family: "Fira Code", monospace;
+        font-size: 0.9rem;
+      }
+
+      .badge {
+        font-size: 0.8rem;
+        padding: 0.35rem 0.65rem;
+        margin-left: 0.5rem;
+      }
+
+      .required {
+        background-color: var(--danger-color);
+      }
+
+      .optional {
+        background-color: var(--secondary-color);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Blue Diary API</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar">
+      <div class="nav flex-column nav-pills">
+        <a class="nav-link active" href="#auth">認證 API</a>
+        <a class="nav-link" href="#divelog">潛水日誌 API</a>
+        <a class="nav-link" href="#divemap">潛點地圖 API</a>
+        <a class="nav-link" href="#errors">錯誤處理</a>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <section id="auth" class="mb-5">
+        <h2>認證 API</h2>
+
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method post">POST</span>
+            <code class="endpoint-path">/api/auth/register</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">註冊新用戶</p>
+          <h6>請求參數</h6>
+          <pre><code class="language-json">{
+  "name": "使用者名稱",
+  "email": "user@example.com",
+  "password": "password123"
+}</code></pre>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">{
+  "token": "access_token",
+  "refreshToken": "refresh_token",
+  "user": {
+    "uid": "user_id",
+    "name": "使用者名稱",
+    "email": "user@example.com"
+  }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 登入 API -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method post">POST</span>
+            <code class="endpoint-path">/api/auth/login</code>
+          </div>
+          <p class="endpoint-description">用戶登入</p>
+          <h6>請求參數</h6>
+          <pre><code class="language-json">{
+  "email": "user@example.com",
+  "password": "password123"
+}</code></pre>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">{
+  "token": "access_token",
+  "refreshToken": "refresh_token",
+  "user": {
+    "uid": "user_id",
+    "name": "使用者名稱",
+    "email": "user@example.com"
+  }
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- Token 刷新 API -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method post">POST</span>
+            <code class="endpoint-path">/api/auth/refresh</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">刷新訪問令牌</p>
+          <h6>請求參數</h6>
+          <pre><code class="language-json">{
+  "refreshToken": "refresh_token"
+}</code></pre>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">{
+  "token": "new_access_token"
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="divelog" class="mb-5">
+        <h2>潛水日誌 API</h2>
+
+        <!-- 創建潛水日誌 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method post">POST</span>
+            <code class="endpoint-path">/api/divelog</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">創建新的潛水日誌</p>
+          <h6>請求參數</h6>
+          <pre><code class="language-json">{
+  "date": "2024-02-12",
+  "time": "14:30",
+  "location": "綠島",
+  "airTemp": 28,
+  "waterTemp": 26,
+  "weather": "晴天",
+  "waterType": "ocean",
+  "diveType": "boat",
+  "current": "weak",
+  "waveCondition": "calm",
+  "maxDepth": 18,
+  "duration": 45,
+  "weight": 4,
+  "visibility": 15,
+  "tankType": "鋁",
+  "startPressure": 200,
+  "endPressure": 50,
+  "buddies": ["John", "Mary"],
+  "diveShop": "藍波潛水",
+  "equipment": ["BCD", "調節器", "電腦錶"],
+  "notes": "看到海龜和魚群",
+  "images": []
+}</code></pre>
+          <div class="response-example">
+            <h6>響應範例 (201 Created)</h6>
+            <pre><code class="language-json">{
+  "id": "dive_log_id",
+  "userId": "user_id",
+  "sac": "12.5",
+  "createdAt": "2024-02-12T06:30:00.000Z",
+  "updatedAt": "2024-02-12T06:30:00.000Z"
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 獲取所有潛水日誌 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method get">GET</span>
+            <code class="endpoint-path">/api/divelog</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">獲取用戶的所有潛水日誌</p>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">[
+  {
+    "id": "dive_log_id1",
+    "date": "2024-02-12",
+    "location": "綠島",
+    "maxDepth": 18
+  },
+  {
+    "id": "dive_log_id2",
+    "date": "2024-02-11",
+    "location": "蘭嶼",
+    "maxDepth": 25
+  }
+]</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="divemap" class="mb-5">
+        <h2>潛點地圖 API</h2>
+
+        <!-- 獲取所有潛點 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method get">GET</span>
+            <code class="endpoint-path">/api/divemap</code>
+          </div>
+          <p class="endpoint-description">獲取所有潛點資訊</p>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">[
+  {
+    "id": "site1",
+    "name": "綠島石朗",
+    "lat": 22.6569,
+    "lng": 121.4723,
+    "description": "綠島最受歡迎的潛點之一，適合初學者。",
+    "depthMin": 5,
+    "depthMax": 18,
+    "difficulty": "easy",
+    "createdAt": "2024-02-12T06:30:00.000Z"
+  }
+]</code></pre>
+          </div>
+        </div>
+
+        <!-- 獲取特定潛點 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method get">GET</span>
+            <code class="endpoint-path">/api/divemap/:id</code>
+          </div>
+          <p class="endpoint-description">獲取特定潛點的詳細資訊</p>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">{
+  "id": "site1",
+  "name": "綠島石朗",
+  "lat": 22.6569,
+  "lng": 121.4723,
+  "description": "綠島最受歡迎的潛點之一，適合初學者。",
+  "depthMin": 5,
+  "depthMax": 18,
+  "difficulty": "easy",
+  "createdAt": "2024-02-12T06:30:00.000Z"
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="errors">
+        <h2>錯誤處理</h2>
+        <div class="endpoint">
+          <h5>錯誤響應格式</h5>
+          <pre><code class="language-json">{
+  "error": "錯誤訊息描述"
+}</code></pre>
+
+          <h5 class="mt-4">常見狀態碼</h5>
+          <ul class="list-unstyled">
+            <li><code>400</code> - 請求格式錯誤</li>
+            <li><code>401</code> - 未認證或 token 無效</li>
+            <li><code>403</code> - 無權限訪問</li>
+            <li><code>404</code> - 資源不存在</li>
+            <li><code>500</code> - 服務器錯誤</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "sites": {
+    "site1": {
+      "name": "綠島石朗",
+      "lat": 22.6569,
+      "lng": 121.4723,
+      "description": "綠島最受歡迎的潛點之一，適合初學者。水深較淺，能見度良好，常見熱帶魚群和珊瑚。",
+      "depthMin": 5,
+      "depthMax": 18,
+      "difficulty": "easy",
+      "createdAt": "2024-02-12T06:30:00.000Z"
+    },
+    "site2": {
+      "name": "蘭嶼八代灣",
+      "lat": 22.0547,
+      "lng": 121.5503,
+      "description": "蘭嶼知名潛點，以豐富的海洋生態聞名。可以看到各種熱帶魚類和美麗的軟珊瑚。",
+      "depthMin": 8,
+      "depthMax": 25,
+      "difficulty": "medium",
+      "createdAt": "2024-02-12T06:30:00.000Z"
+    },
+    "site3": {
+      "name": "墾丁萬里桐",
+      "lat": 21.9734,
+      "lng": 120.747,
+      "description": "適合初學者的潛點，沿岸即可入水。珊瑚礁生態豐富，常見熱帶魚類。",
+      "depthMin": 3,
+      "depthMax": 15,
+      "difficulty": "easy",
+      "createdAt": "2024-02-12T06:30:00.000Z"
+    },
+    "site4": {
+      "name": "小琉球花瓶岩",
+      "lat": 22.3397,
+      "lng": 120.3694,
+      "description": "著名的海龜棲息地，常可與海龜共游。地形特殊，適合進階潛水員。",
+      "depthMin": 10,
+      "depthMax": 30,
+      "difficulty": "hard",
+      "createdAt": "2024-02-12T06:30:00.000Z"
+    },
+    "site5": {
+      "name": "澎湖七美藍洞",
+      "lat": 23.1994,
+      "lng": 119.2891,
+      "description": "澎湖特殊地形潛點，需要經驗豐富的潛水員。藍洞景觀壯觀，適合探險。",
+      "depthMin": 15,
+      "depthMax": 35,
+      "difficulty": "hard",
+      "createdAt": "2024-02-12T06:30:00.000Z"
+    }
+  }
+}
