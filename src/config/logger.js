@@ -1,41 +1,46 @@
 const winston = require("winston");
-const path = require("path");
 
-// 定義日誌格式
+// 檢查是否在 Vercel 環境中
+const isVercel = process.env.VERCEL === "1";
+
+// 創建日誌格式
 const logFormat = winston.format.combine(
-  winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-  winston.format.errors({ stack: true }),
-  winston.format.splat(),
+  winston.format.timestamp(),
   winston.format.json()
 );
 
-// 創建 Winston logger
-const logger = winston.createLogger({
-  format: logFormat,
-  transports: [
-    // 寫入所有日誌到 combined.log
+// 配置 transports
+const transports = [];
+
+// 在非 Vercel 環境中使用文件 transport
+if (!isVercel) {
+  // 添加文件 transports
+  transports.push(
     new winston.transports.File({
-      filename: path.join(__dirname, "../../logs/combined.log"),
-      level: "info",
-    }),
-    // 寫入錯誤日誌到 error.log
-    new winston.transports.File({
-      filename: path.join(__dirname, "../../logs/error.log"),
+      filename: "logs/error.log",
       level: "error",
     }),
-  ],
-});
-
-// 在開發環境下，同時輸出到控制台
-if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      ),
+    new winston.transports.File({
+      filename: "logs/combined.log",
     })
   );
 }
+
+// 始終添加 Console transport
+transports.push(
+  new winston.transports.Console({
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.simple()
+    ),
+  })
+);
+
+// 創建 logger
+const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || "info",
+  format: logFormat,
+  transports: transports,
+});
 
 module.exports = logger;

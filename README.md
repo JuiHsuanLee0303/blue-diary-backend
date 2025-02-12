@@ -120,8 +120,15 @@ npm start
 
 使用 Winston 進行日誌記錄：
 
+本地開發環境：
+
 - `logs/combined.log`: 所有級別的日誌
 - `logs/error.log`: 僅錯誤日誌
+
+生產環境：
+
+- 使用 Console 輸出
+- 可通過 Vercel 日誌面板查看
 
 ### 錯誤處理
 
