@@ -388,6 +388,120 @@
           </ul>
         </div>
       </section>
+
+      <section id="profile" class="mb-5">
+        <h2>用戶資料 API</h2>
+
+        <!-- 獲取用戶資料 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method get">GET</span>
+            <code class="endpoint-path">/api/profile</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">獲取用戶資料</p>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">{
+  "uid": "user123",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "certificates": [
+    {
+      "system": "PADI",
+      "level": "Open Water",
+      "url": "https://example.com/cert1.pdf",
+      "createdAt": "2024-02-12T06:30:00.000Z"
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 更新用戶資料 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method put">PUT</span>
+            <code class="endpoint-path">/api/profile</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">更新用戶資料</p>
+          <h6>請求參數</h6>
+          <pre><code class="language-json">{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "certificates": [
+    {
+      "system": "PADI",
+      "level": "Open Water",
+      "url": "https://example.com/cert1.pdf"
+    }
+  ]
+}</code></pre>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">{
+  "uid": "user123",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "certificates": [
+    {
+      "system": "PADI",
+      "level": "Open Water",
+      "url": "https://example.com/cert1.pdf"
+    }
+  ],
+  "updatedAt": "2024-02-12T06:30:00.000Z"
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 添加證照 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method post">POST</span>
+            <code class="endpoint-path">/api/profile/certificates</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">添加新的潛水證照</p>
+          <h6>請求參數</h6>
+          <pre><code class="language-json">{
+  "system": "PADI",     // 必填：證照系統
+  "level": "Advanced",  // 必填：證照等級
+  "url": "https://example.com/cert2.pdf"  // 選填：證照圖片或文件URL
+}</code></pre>
+          <div class="response-example">
+            <h6>響應範例 (201 Created)</h6>
+            <pre><code class="language-json">{
+  "system": "PADI",
+  "level": "Advanced",
+  "url": "https://example.com/cert2.pdf",
+  "createdAt": "2024-02-12T06:30:00.000Z"
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 刪除證照 -->
+        <div class="endpoint">
+          <div class="d-flex align-items-center">
+            <span class="method delete">DELETE</span>
+            <code class="endpoint-path">/api/profile/certificates/:index</code>
+            <span class="badge required">需要認證</span>
+          </div>
+          <p class="endpoint-description">刪除指定索引的證照</p>
+          <p class="text-muted">
+            <small>注意：index 是證照在陣列中的索引位置（從 0 開始）</small>
+          </p>
+          <div class="response-example">
+            <h6>響應範例 (200 OK)</h6>
+            <pre><code class="language-json">{
+  "message": "證照已成功刪除"
+}</code></pre>
+          </div>
+        </div>
+
+        <!-- 其他 profile API 端點... -->
+      </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

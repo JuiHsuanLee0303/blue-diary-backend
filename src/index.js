@@ -6,6 +6,7 @@ const logger = require("./config/logger");
 const authRoutes = require("./routes/authRoutes");
 const diveLogRoutes = require("./routes/diveLogRoutes");
 const diveMapRoutes = require("./routes/diveMapRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/divelog", diveLogRoutes);
 app.use("/api/divemap", diveMapRoutes);
+app.use("/api/profile", profileRoutes);
 
 // API 文檔路由
 app.get("/docs", (req, res) => {
