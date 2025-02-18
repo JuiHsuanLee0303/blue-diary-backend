@@ -2,6 +2,7 @@ const express = require("express");
 const { db } = require("../config/firebase");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const logger = require("../config/logger");
+const { auth } = require("../config/firebase");
 
 const router = express.Router();
 
@@ -32,18 +33,43 @@ router.get("/", verifyToken, async (req, res) => {
 // 更新用戶資料
 router.put("/", verifyToken, async (req, res) => {
   try {
-    console.log(req.body);
     const userRef = db.ref(`users/${req.user.uid}`);
-    console.log(userRef);
-    const updateData = {
-      name: req.body.name,
-      email: req.body.email,
-      certificates: req.body.certificates || [],
+    const { currentPassword, newPassword, ...updateData } = req.body;
+
+    // 如果要更改密碼
+    if (currentPassword && newPassword) {
+      try {
+        // 驗證當前密碼
+        await auth.signInWithEmailAndPassword(
+          updateData.email,
+          currentPassword
+        );
+
+        // 更新密碼
+        const user = auth.currentUser;
+        await user.updatePassword(newPassword);
+
+        logger.info("Password updated successfully", {
+          uid: req.user.uid,
+        });
+      } catch (error) {
+        logger.error("Password update failed", {
+          error: error.message,
+          uid: req.user.uid,
+        });
+        return res.status(400).json({ error: "當前密碼不正確" });
+      }
+    }
+
+    // 更新其他用戶資料
+    const profileUpdate = {
+      name: updateData.name,
+      email: updateData.email,
+      certificates: updateData.certificates || [],
       updatedAt: new Date().toISOString(),
     };
-    console.log(updateData);
 
-    await userRef.update(updateData);
+    await userRef.update(profileUpdate);
 
     logger.info("User profile updated", {
       uid: req.user.uid,
@@ -51,7 +77,7 @@ router.put("/", verifyToken, async (req, res) => {
 
     res.json({
       uid: req.user.uid,
-      ...updateData,
+      ...profileUpdate,
     });
   } catch (error) {
     logger.error("Failed to update user profile", {
