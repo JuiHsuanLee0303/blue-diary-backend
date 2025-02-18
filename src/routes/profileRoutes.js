@@ -37,17 +37,12 @@ router.put("/", verifyToken, async (req, res) => {
     const { currentPassword, newPassword, ...updateData } = req.body;
 
     // 如果要更改密碼
-    if (currentPassword && newPassword) {
+    if (currentPassword || newPassword) {
       try {
-        // 驗證當前密碼
-        await auth.signInWithEmailAndPassword(
-          updateData.email,
-          currentPassword
-        );
-
-        // 更新密碼
-        const user = auth.currentUser;
-        await user.updatePassword(newPassword);
+        // 使用 Firebase Admin SDK 更新密碼
+        await auth.updateUser(req.user.uid, {
+          password: newPassword,
+        });
 
         logger.info("Password updated successfully", {
           uid: req.user.uid,
@@ -57,7 +52,7 @@ router.put("/", verifyToken, async (req, res) => {
           error: error.message,
           uid: req.user.uid,
         });
-        return res.status(400).json({ error: "當前密碼不正確" });
+        return res.status(400).json({ error: "密碼更新失敗" });
       }
     }
 
