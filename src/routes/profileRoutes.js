@@ -32,13 +32,16 @@ router.get("/", verifyToken, async (req, res) => {
 // 更新用戶資料
 router.put("/", verifyToken, async (req, res) => {
   try {
+    console.log(req.body);
     const userRef = db.ref(`users/${req.user.uid}`);
+    console.log(userRef);
     const updateData = {
       name: req.body.name,
       email: req.body.email,
       certificates: req.body.certificates || [],
       updatedAt: new Date().toISOString(),
     };
+    console.log(updateData);
 
     await userRef.update(updateData);
 
